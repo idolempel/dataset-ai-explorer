@@ -1,0 +1,4 @@
+label,qty,score,active
+b,10,10.1,true
+a,2,2.5,false
+c,100,100.0,true

@@ -1,0 +1,6 @@
+id,name,department,salary,is_manager,hired_at
+1,Ada Lovelace,Engineering,120000,true,2021-03-01
+2,Alan Turing,Engineering,118000,false,2020-07-15
+3,Grace Hopper,Research,125000,true,2019-01-20
+4,Katherine Johnson,Research,110000,false,2022-05-10
+5,Linus Torvalds,Engineering,130000,true,2018-11-02
