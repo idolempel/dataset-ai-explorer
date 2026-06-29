@@ -133,20 +133,20 @@ npm run build
 
 **Backend** (`backend/.env`)
 
-| Variable | Description |
-|----------|-------------|
-| `ANTHROPIC_API_KEY` | API key used to call the Anthropic Claude API. |
-| `ANTHROPIC_MODEL` | Claude model identifier used for SQL generation and summarization. |
-| `DATABASE_PATH` | Path to the SQLite database file. |
-| `CORS_ORIGINS` | Comma-separated list of allowed frontend origins. |
-| `MAX_LLM_RESULT_ROWS` | Maximum number of rows returned to the UI/LLM from a query. |
-| `MAX_UPLOAD_BYTES` | Maximum allowed CSV upload size in bytes. |
+| Variable | Default | Description |
+|----------|-------------------|-------------|
+| `ANTHROPIC_API_KEY` | `your_api_key_here` | API key used to call the Anthropic Claude API. |
+| `ANTHROPIC_MODEL` | `claude-sonnet-4-6` | Claude model identifier used for SQL generation and summarization. |
+| `DATABASE_PATH` | `data/app.db` | Path to the SQLite database file. |
+| `CORS_ORIGINS` | `http://localhost:5173` | Comma-separated list of allowed frontend origins. |
+| `MAX_LLM_RESULT_ROWS` | `200` | Maximum number of rows returned to the UI/LLM from a query. |
+| `MAX_UPLOAD_BYTES` | `10485760` | Maximum allowed CSV upload size in bytes. |
 
 **Frontend** (`frontend/.env`)
 
-| Variable | Description |
-|----------|-------------|
-| `VITE_API_BASE_URL` | Base URL of the backend API. |
+| Variable | Example / Default | Description |
+|----------|-------------------|-------------|
+| `VITE_API_BASE_URL` | `http://localhost:8000` | Base URL of the backend API. |
 
 > Never commit real `.env` files or API keys. Use the provided `.env.example`
 > templates and configure secrets through your hosting provider's environment
@@ -223,15 +223,26 @@ Full, interactive documentation (Swagger UI) is available at `/docs` — locally
 ## 13. What I'd Do Next
 
 - Improve typed data handling by normalizing dates and storing typed values alongside
-  the original CSV text, so filtering, sorting, and AI-generated SQL can handle dates
-  and numbers more reliably.
+  the original CSV text. This would make filtering, sorting, and AI-generated SQL
+  more reliable for non-ISO dates, numeric edge cases, and mixed-format CSV data.
+
 - Support larger and messier datasets with streaming ingestion, background jobs,
-  progress indicators, and clearer validation errors for malformed CSV files.
-- Make AI analysis more robust for complex questions such as rolling averages, sliding
-  windows, anomaly detection, and time-period comparisons, without sending too many
-  raw rows to the LLM. Add charts and visual summaries for AI result previews and
-  common aggregations.
+  progress indicators, and clearer validation errors. This would avoid blocking the
+  request/response cycle during large uploads and provide better feedback for malformed
+  CSV files.
+
+- Make AI analysis more robust for complex questions such as rolling averages,
+  sliding windows, anomaly detection, and time-period comparisons. Instead of sending
+  too many raw rows to the LLM, the backend could plan multi-step SQL queries,
+  window-function queries, or intermediate summaries that still analyze the full
+  dataset safely.
+
 - Add multi-table analysis so users can upload related datasets, define relationships
-  between tables, and ask AI questions that require joins across datasets.
-- Add authentication and persistent storage so each user can securely keep, revisit,
-  and manage their own datasets across sessions and deployments.
+  between tables, and ask AI questions that require joins across datasets. This would
+  make the app useful for more realistic workflows where information is split across
+  multiple CSV files.
+
+- Add authentication, persistent storage, and data retention controls so each user can
+  securely manage their own datasets across sessions and deployments. This should also
+  include dataset deletion, storage quotas, and cleanup policies for old or unused
+  uploaded tables.
